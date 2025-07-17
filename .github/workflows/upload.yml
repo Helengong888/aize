@@ -17,7 +17,6 @@ jobs:
 
       - name: Read CSV and Download Images
         run: |
-          set -e
           while IFS= read -r url || [ -n "$url" ]; do
             if [[ "$url" =~ ^https?:// ]]; then
               filename=$(basename "$url")
