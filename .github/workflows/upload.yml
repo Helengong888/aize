@@ -12,5 +12,5 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - name: Print Hello
-        run: echo "Workflow triggered and running"
+      - name: Echo test
+        run: echo "Workflow triggered successfully!"
