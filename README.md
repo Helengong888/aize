@@ -1,1 +1,2 @@
-# 1688-images-batch-01
+# 1688 Image Batch Upload
+This repository contains image data from a batch of 1688 product images.
