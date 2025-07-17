@@ -1,16 +1,40 @@
-name: Test Workflow
+name: Image Upload from CSV
 
 on:
   push:
+    branches:
+      - main
     paths:
       - 'images.csv'
+  workflow_dispatch:
 
 jobs:
-  test:
+  upload:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Echo test
-        run: echo "Workflow triggered successfully!"
+      - name: Create images directory
+        run: mkdir -p images
+
+      - name: Download images from CSV
+        run: |
+          set -e
+          while IFS= read -r url || [ -n "$url" ]; do
+            if [[ "$url" =~ ^https?:// ]]; then
+              filename=$(basename "$url")
+              echo "Downloading $url ..."
+              curl -L -e "https://www.1688.com" "$url" --fail --output "images/$filename" || echo "Failed to download $url"
+            fi
+          done < images.csv
+
+      - name: Commit and push images
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add images
+          git commit -m "Add downloaded images" || echo "No changes to commit"
+          git push
+
