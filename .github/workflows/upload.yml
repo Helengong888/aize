@@ -17,7 +17,7 @@ jobs:
 
       - name: Read CSV and Download Images
         run: |
-          while IFS=, read -r name url; do
+          while IFS= read -r url; do
             if [[ "$url" =~ ^https?:// ]]; then
               filename=$(basename "$url")
               curl -L "$url" --output "images/$filename"
